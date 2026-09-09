@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hello James</title>
+<style>
+  :root {
+    --bg1: #1b1035;
+    --bg2: #3a1c5c;
+    --creature: #7fe9c1;
+    --creature-dark: #4fc9a3;
+    --accent: #ff6ec7;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(circle at 50% 30%, var(--bg2), var(--bg1) 70%);
+    font-family: 'Segoe UI', Verdana, sans-serif;
+    color: white;
+    overflow: hidden;
+  }
+
+  .stage {
+    position: relative;
+    width: 280px;
+    height: 320px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+
+  .speech {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    color: #1b1035;
+    padding: 0.6rem 1.1rem;
+    border-radius: 16px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    animation: bob 1.6s ease-in-out infinite;
+  }
+  .speech::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 8px 8px 0 8px;
+    border-style: solid;
+    border-color: white transparent transparent transparent;
+  }
+
+  .creature {
+    position: relative;
+    width: 160px;
+    height: 180px;
+    animation: dance 0.9s ease-in-out infinite;
+    transform-origin: bottom center;
+  }
+
+  .creature .body {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, var(--creature), var(--creature-dark));
+    border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+    box-shadow: inset -10px -10px 20px rgba(0,0,0,0.15);
+  }
+
+  .creature .eye {
+    position: absolute;
+    top: 55px;
+    width: 26px;
+    height: 34px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 0 3px rgba(0,0,0,0.05);
+  }
+  .creature .eye::after {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 6px;
+    width: 14px;
+    height: 14px;
+    background: #1b1035;
+    border-radius: 50%;
+  }
+  .creature .eye.left { left: 35px; }
+  .creature .eye.right { right: 35px; }
+
+  .creature .cheek {
+    position: absolute;
+    top: 92px;
+    width: 16px;
+    height: 10px;
+    background: var(--accent);
+    border-radius: 50%;
+    opacity: 0.6;
+  }
+  .creature .cheek.left { left: 22px; }
+  .creature .cheek.right { right: 22px; }
+
+  .creature .mouth {
+    position: absolute;
+    top: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 20px;
+    border-bottom: 5px solid #1b1035;
+    border-radius: 0 0 20px 20px;
+  }
+
+  .creature .arm {
+    position: absolute;
+    top: 70px;
+    width: 14px;
+    height: 60px;
+    background: var(--creature-dark);
+    border-radius: 10px;
+    transform-origin: top center;
+  }
+  .creature .arm.left { left: -6px; animation: swingLeft 0.9s ease-in-out infinite; }
+  .creature .arm.right { right: -6px; animation: swingRight 0.9s ease-in-out infinite; }
+
+  .creature .antenna {
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 24px;
+    background: var(--creature-dark);
+  }
+  .creature .antenna::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -4px;
+    width: 12px;
+    height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+  }
+
+  @keyframes dance {
+    0%   { transform: rotate(-8deg) translateY(0); }
+    25%  { transform: rotate(0deg) translateY(-14px); }
+    50%  { transform: rotate(8deg) translateY(0); }
+    75%  { transform: rotate(0deg) translateY(-14px); }
+    100% { transform: rotate(-8deg) translateY(0); }
+  }
+  @keyframes swingLeft {
+    0%, 100% { transform: rotate(-30deg); }
+    50% { transform: rotate(30deg); }
+  }
+  @keyframes swingRight {
+    0%, 100% { transform: rotate(30deg); }
+    50% { transform: rotate(-30deg); }
+  }
+  @keyframes bob {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-6px); }
+  }
+
+  .creature.exploding {
+    animation: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+  .speech.exploding {
+    animation: none;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+  }
+
+  .particle {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    left: 50%;
+    top: 50%;
+    pointer-events: none;
+  }
+
+  .btn-row {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 1rem;
+  }
+
+  button {
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 0.8rem 1.8rem;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.15s ease;
+  }
+  button:active { transform: scale(0.94); }
+
+  #explodeBtn {
+    background: var(--accent);
+    color: #1b1035;
+    box-shadow: 0 4px 14px rgba(255, 110, 199, 0.4);
+  }
+
+  #respawnBtn {
+    background: transparent;
+    color: white;
+    border: 2px solid rgba(255,255,255,0.5);
+    display: none;
+  }
+
+  h1 {
+    position: absolute;
+    top: 2rem;
+    font-size: 1rem;
+    letter-spacing: 0.3rem;
+    text-transform: uppercase;
+    opacity: 0.5;
+  }
+</style>
+</head>
+<body>
+
+<h1>A Very Important Creature</h1>
+
+<div class="stage" id="stage">
+  <div class="speech" id="speech">Hello James!</div>
+  <div class="creature" id="creature">
+    <div class="antenna"></div>
+    <div class="arm left"></div>
+    <div class="arm right"></div>
+    <div class="body"></div>
+    <div class="eye left"></div>
+    <div class="eye right"></div>
+    <div class="cheek left"></div>
+    <div class="cheek right"></div>
+    <div class="mouth"></div>
+  </div>
+</div>
+
+<div class="btn-row">
+  <button id="explodeBtn">💥 Make it explode</button>
+  <button id="respawnBtn">Bring it back</button>
+</div>
+
+<script>
+  const creature = document.getElementById('creature');
+  const speech = document.getElementById('speech');
+  const stage = document.getElementById('stage');
+  const explodeBtn = document.getElementById('explodeBtn');
+  const respawnBtn = document.getElementById('respawnBtn');
+  const colors = ['#7fe9c1', '#4fc9a3', '#ff6ec7', '#ffd97d', '#ffffff'];
+
+  function explode() {
+    const rect = creature.getBoundingClientRect();
+    const stageRect = stage.getBoundingClientRect();
+    const originX = rect.left - stageRect.left + rect.width / 2;
+    const originY = rect.top - stageRect.top + rect.height / 2;
+
+    creature.classList.add('exploding');
+    speech.classList.add('exploding');
+    explodeBtn.style.display = 'none';
+
+    for (let i = 0; i < 28; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      p.style.background = colors[Math.floor(Math.random() * colors.length)];
+      p.style.left = originX + 'px';
+      p.style.top = originY + 'px';
+      stage.appendChild(p);
+
+      const angle = (Math.PI * 2 * i) / 28 + Math.random() * 0.4;
+      const distance = 90 + Math.random() * 90;
+      const dx = Math.cos(angle) * distance;
+      const dy = Math.sin(angle) * distance;
+
+      p.animate([
+        { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+        { transform: `translate(${dx}px, ${dy}px) scale(0)`, opacity: 0 }
+      ], {
+        duration: 700 + Math.random() * 300,
+        easing: 'cubic-bezier(.25,.8,.25,1)'
+      }).onfinish = () => p.remove();
+    }
+
+    setTimeout(() => { respawnBtn.style.display = 'inline-block'; }, 500);
+  }
+
+  function respawn() {
+    creature.classList.remove('exploding');
+    speech.classList.remove('exploding');
+    explodeBtn.style.display = 'inline-block';
+    respawnBtn.style.display = 'none';
+  }
+
+  explodeBtn.addEventListener('click', explode);
+  respawnBtn.addEventListener('click', respawn);
+</script>
+
+</body>
+</html>
